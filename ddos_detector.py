@@ -17,7 +17,8 @@ def packet_handler(packet):
     if IP in packet:
         src_ip = packet[IP].src
         ip_counter[src_ip] += 1
-
+src_ip = packet[IP].src
+        ip_counter[src_ip] += 1
     current_time = time.time()
 
     if current_time - start_time >= TIME_WINDOW:

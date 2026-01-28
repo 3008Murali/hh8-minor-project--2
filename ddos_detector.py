@@ -35,6 +35,8 @@ def packet_handler(packet):
 
         ip_counter.clear()
         start_time = current_time
+          ip_counter.clear()
+        start_time = current_time
 
 
 def blacklist_ip(ip):

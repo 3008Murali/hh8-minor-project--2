@@ -48,5 +48,5 @@ def detect_ddos(packet):
                 ip_counter[src_ip] = 1
 
 
-print("🚨 DDoS Detection Tool Started...")
+print("DDoS Detection Tool Started...")
 sniff(prn=detect_ddos, store=False)

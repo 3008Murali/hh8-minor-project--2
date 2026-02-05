@@ -19,7 +19,7 @@ def load_blacklist():
 
 def add_to_blacklist(ip):
     with open(BLACKLIST_FILE, "a") as file:
-        file.write(ip + "\n")
+        
 
 
 blacklisted_ips = load_blacklist()

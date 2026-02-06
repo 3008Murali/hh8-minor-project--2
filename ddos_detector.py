@@ -6,11 +6,11 @@ from collections import defaultdict
 import time
 
 
-# 🔇 Silence Scapy warnings
+
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
-PACKET_THRESHOLD = 20   # Lowered to ensure alert
-TIME_WINDOW = 2         # Short window for demo
+PACKET_THRESHOLD = 20   
+TIME_WINDOW = 2        
 
 def simulate_ddos():
     print("🚨 DDoS Detection Tool Started (Simulation Mode)...")

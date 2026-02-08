@@ -43,4 +43,4 @@ for ip, count in ip_counter.items():
         print(f"[ALERT] DDoS suspected from {ip}")
         block_ip(ip)
 
-print("\n✅ Monitoring stopped after 10 seconds.")
+print("\nMonitoring stopped after 10 seconds.")

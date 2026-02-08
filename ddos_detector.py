@@ -1,70 +1,46 @@
+from scapy.all import sniff, IP
+from collections import defaultdict
 import time
-import random
-from collections import defaultdict, deque
+import sys
 
-TIME_WINDOW = 10          
-REQUEST_THRESHOLD = 5     
-RUN_DURATION = 5          
+ip_counter = defaultdict(int)
+blocked_ips = set()
 
-ip_requests = defaultdict(deque)
-blacklist = set()
-blocked_logged = set()  
+PACKET_THRESHOLD = 20
+RUN_DURATION = 10   
+BLACKLIST_FILE = "blacklistt.txt"
 
-SIMULATED_IPS = [
-    "192.168.1.10",
-    "192.168.1.20",
-    "192.168.1.30",
-    "10.0.0.5"
-]
+start_time = time.time()
 
-def get_fake_packet():
-    """
-    Simulates incoming network traffic.
-    One IP appears more frequently to mimic an attack.
-    """
-    return random.choice(SIMULATED_IPS + ["192.168.1.10"] * 5)
+def block_ip(ip):
+    blocked_ips.add(ip)
+    with open(BLACKLIST_FILE, "a") as f:
+        f.write(ip + "\n")
+    print(f"[BLOCKED] {ip} added to blacklistt")
 
-def detect_ddos(ip):
-    current_time = time.time()
-    requests = ip_requests[ip]
+def packet_handler(packet):
+    if IP in packet:
+        src_ip = packet[IP].src
 
-    while requests and current_time - requests[0] > TIME_WINDOW:
-        requests.popleft()
+        if src_ip in blocked_ips:
+            return
 
-    requests.append(current_time)
+        ip_counter[src_ip] += 1
 
-    if len(requests) > REQUEST_THRESHOLD and ip not in blacklist:
-        blacklist.add(ip)
-        print(f"[ALERT] Potential DDoS detected from {ip}")
-        print(f"[ACTION] {ip} added to blacklist\n")
+def stop_filter(packet):
+    return time.time() - start_time >= RUN_DURATION
 
-def main():
-    print("Starting DDoS Detection Tool (Educational Mode)")
-    print("Monitoring simulated traffic...\n")
+print("🛡️ DDoS Detection Tool Started...")
+print("Monitoring network traffic for 10 seconds...\n")
 
-    start_time = time.time()
+sniff(prn=packet_handler, stop_filter=stop_filter, store=False)
 
-    while time.time() - start_time < RUN_DURATION:
-        src_ip = get_fake_packet()
+print("\n--- Traffic Analysis ---")
+for ip, count in ip_counter.items():
+    print(f"IP: {ip} | Packets: {count}")
 
-        if src_ip in blacklist:
-            if src_ip not in blocked_logged:
-                print(f"[BLOCKED] Traffic from blacklisted IP: {src_ip}")
-                blocked_logged.add(src_ip)
-        else:
-            detect_ddos(src_ip)
+    if count >= PACKET_THRESHOLD:
+        print(f"[ALERT] DDoS suspected from {ip}")
+        block_ip(ip)
 
-        time.sleep(0.1)
-
-    print("\nExecution stopped after 5 seconds.")
-    print("Blacklisted IPs:", blacklist)
-
-if __name__ == "__main__":
-    main()
-
-
-
-
-
-
-
+print("\n✅ Monitoring stopped after 10 seconds.")

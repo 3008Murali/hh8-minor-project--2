@@ -1,26 +1,20 @@
-# hh8-minor-project-2
 Project Description
-The DDoS Detection Tool is a cybersecurity tool programmed under Python, and it observes and checks live network traffic to pinpoint high-frequency packet flooding. It checks for potential DDoS attacks through the detection and monitoring of a specified number of packets sent by IP addresses within a fixed 10-second time period. Automatically, after detecting a potential threat, an IP is marked and included in a list of blacklisted IPs.
 
-Tools Used
+This is a simple DDoS detection utility using Python with the Scapy library. It sniffs network traffic for a little while, finds suspicious IP addresses based on packet count, and blacklists them for demonstration purposes.
+
+Tools Utilized
 Python
-VS Code 
-Networking & Cybersecurity concepts
+Scapy
+Npcap for packet sniffing on Windows
+Overview of Git & GitHub
 
-How to Run the Project
-Installing Python
-Get the Project
-Clone the repository from GitHub or download a ZIP archive of the project.
-Open in VS Code
- Run the Program python ddos_detector
+Running the Project
+Install Python and Npcap
+Install required library:
+pip install scapy
+Run the Program
 
-
-What I Learned
-Through this project, I learned:
-Basic Idea of Distributed Denial of Service (DDoS) Attacks
-How traffic rate analysis can be applied to the identification of anomalies
-Implementation of a sliding time window for request counting
-How does threshold-based detection work in IDS/IPS systems
-The Significance of Suppression of Log Records to Hinder Alert Overflow
-How security tools that are used on a daily basis monitor network traffic
-Practical Skills with Python: data structures like deque and defaultdict
+What I learned
+Fundamentals of network traffic monitoring
+Packet sniffing - Scapy
+Identifying DDoS behavior using thresholds Working with GitHub and README documentation
